@@ -1,0 +1,151 @@
+{
+  "identifier": "toolchain_error_encounter_survey",
+  "title": "Toolchain or Error Encounter Survey",
+  "icon": "Bug",
+  "trigger": {
+    "type": "self-service",
+    "operation": "CREATE",
+    "userInputs": {
+      "properties": {
+        "error_clarity": {
+          "icon": "DefaultProperty",
+          "type": "number",
+          "title": "How understandable was the error message you encountered?",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "documentation_help": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Did you find the available documentation helpful in resolving the error?",
+          "enum": [
+            "Yes",
+            "No"
+          ]
+        },
+        "documentation_help_comment": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Optional: Please share any additional comments on the documentation",
+          "visible": {
+            "jqQuery": ".form.documentation_help == \"No\""
+          }
+        },
+        "error_experience_reflection": {
+          "icon": "DefaultProperty",
+          "type": "number",
+          "title": "Reflecting on previous encounters, how has your experience with similar errors compared to your expectations?",
+          "description": "1 = Much Worse, 5 = Much Better",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "error_message_actionable_change": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "What change would make these error messages more actionable?"
+        },
+        "toolchain_error_improvement": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "What one improvement would you suggest for our toolchain error messages?"
+        },
+        "version": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Version",
+          "default": "Q1 2025",
+          "visible": false
+        },
+        "user": {
+          "type": "string",
+          "title": "User",
+          "blueprint": "_user",
+          "format": "entity",
+          "default": {
+            "jqQuery": ".user.email"
+          },
+          "visible": false
+        }
+      },
+      "required": [
+        "version"
+      ],
+      "steps": [
+        {
+          "title": "Error Encounter Exp",
+          "order": [
+            "error_clarity",
+            "documentation_help",
+            "documentation_help_comment"
+          ]
+        },
+        {
+          "title": "Retrospective Reflection",
+          "order": [
+            "error_experience_reflection",
+            "error_message_actionable_change"
+          ]
+        },
+        {
+          "title": "Improvement Feedback",
+          "order": [
+            "toolchain_error_improvement"
+          ]
+        },
+        {
+          "title": "Final",
+          "order": [
+            "version",
+            "user"
+          ]
+        }
+      ]
+    },
+    "blueprintIdentifier": "survey_template"
+  },
+  "invocationMethod": {
+    "type": "WEBHOOK",
+    "url": "https://ingest.getport.io/YourWebhookUrl",
+    "agent": false,
+    "synchronized": true,
+    "method": "POST",
+    "headers": {
+      "RUN_ID": "{{ .run.id }}"
+    },
+    "body": {
+      "responses": "{{ .inputs | del(.[\"user\"]) | to_entries | map( if (.value | type) == \"array\" then (. as {key: $k, value: $vals} | $vals | map({\"key\": $k, \"value\": .})) else {\"key\": .key, \"value\": .value} end ) | flatten }}",
+      "port_context": {
+        "runId": "{{ .run.id }}",
+        "actionId": "{{ .action.identifier }}",
+        "user": "{{ .trigger.by.user.email }}",
+        "teams": "{{ .inputs.user.team }}",
+        "version": "{{ .inputs.version }}"
+      }
+    }
+  },
+  "requiredApproval": false
+}

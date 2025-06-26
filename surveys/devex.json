@@ -1,0 +1,372 @@
+{
+  "identifier": "devex_survey",
+  "title": "Developer Experience Survey",
+  "icon": "Rocket",
+  "trigger": {
+    "type": "self-service",
+    "operation": "CREATE",
+    "userInputs": {
+      "properties": {
+        "time_allocation": {
+          "type": "array",
+          "title": "Which tasks take up the most time in your workflow?",
+          "items": {
+            "type": "string",
+            "enum": [
+              "Reviewing PRs",
+              "Writing new features",
+              "Managing incidents",
+              "Solving bugs",
+              "Ops-related tasks",
+              "Refactoring code",
+              "Attending meetings"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "bottlenecks": {
+          "type": "array",
+          "title": "Which blockers most impact your productivity?",
+          "items": {
+            "type": "string",
+            "enum": [
+              "Waiting for PR reviews",
+              "Pending DevOps support",
+              "Locating service owners",
+              "CI/CD inefficiencies",
+              "Security approvals"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "code_review_feedback": {
+          "icon": "DefaultProperty",
+          "title": "I receive timely feedback during code reviews (5 - Strongly Agree, 1 - Strongly Disagree)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "automation_speed": {
+          "icon": "DefaultProperty",
+          "title": "The automated tests in our development process are fast and reliable (5 - Strongly Agree, 1 - Strongly Disagree)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "task_ownership": {
+          "icon": "DefaultProperty",
+          "title": "The objectives and ownership for my tasks are clearly defined (5 - Strongly Agree, 1 - Strongly Disagree)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "independence": {
+          "icon": "DefaultProperty",
+          "title": "I can confidently troubleshoot production issues on my own (5 - Strongly Agree, 1 - Strongly Disagree)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "documentation_clarity": {
+          "icon": "DefaultProperty",
+          "title": "I can easily find and understand documentation (5 - Strongly Agree, 1 - Strongly Disagree)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "guidance_access": {
+          "icon": "DefaultProperty",
+          "title": "I can quickly get useful technical guidance when needed (5 - Strongly Agree, 1 - Strongly Disagree)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "uninterrupted_work": {
+          "icon": "DefaultProperty",
+          "title": "I am able to work for extended periods without interruption (5 - Strongly Agree, 1 - Strongly Disagree)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "disruptions": {
+          "icon": "DefaultProperty",
+          "title": "My planned work is rarely disrupted by unexpected requests (5 - Strongly Agree, 1 - Strongly Disagree)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "oncall_balance": {
+          "icon": "DefaultProperty",
+          "title": "I can effectively balance on-call duties with other work (5 - Strongly Agree, 1 - Strongly Disagree)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "integration_testing": {
+          "icon": "DefaultProperty",
+          "title": "Our integration and testing process is smooth and efficient (5 - Strongly Agree, 1 - Strongly Disagree)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "repetitive_tasks": {
+          "icon": "DefaultProperty",
+          "title": "Repetitive, manual tasks rarely slow down my development (5 - Strongly Agree, 1 - Strongly Disagree)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "process_updates": {
+          "icon": "DefaultProperty",
+          "title": "I regularly see improvements to documentation and processes (5 - Strongly Agree, 1 - Strongly Disagree)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "open_feedback": {
+          "type": "string",
+          "title": "What would make your work more efficient and satisfying?",
+          "description": "Please provide your suggestions"
+        },
+        "version": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Version",
+          "default": "Q1 2025",
+          "visible": false
+        },
+        "user": {
+          "type": "string",
+          "title": "User",
+          "blueprint": "_user",
+          "format": "entity",
+          "default": {
+            "jqQuery": ".user.email"
+          },
+          "visible": false
+        }
+      },
+      "required": [],
+      "steps": [
+        {
+          "title": "Time & Bottlenecks",
+          "order": [
+            "time_allocation",
+            "bottlenecks"
+          ]
+        },
+        {
+          "title": "Workflow & Process",
+          "order": [
+            "code_review_feedback",
+            "automation_speed",
+            "task_ownership",
+            "independence"
+          ]
+        },
+        {
+          "title": "Documentation & Support",
+          "order": [
+            "documentation_clarity",
+            "guidance_access"
+          ]
+        },
+        {
+          "title": "Focus & Balance",
+          "order": [
+            "uninterrupted_work",
+            "disruptions",
+            "oncall_balance"
+          ]
+        },
+        {
+          "title": "Process Efficiency",
+          "order": [
+            "integration_testing",
+            "repetitive_tasks",
+            "process_updates"
+          ]
+        },
+        {
+          "title": "Additional Feedback",
+          "order": [
+            "open_feedback"
+          ]
+        },
+        {
+          "title": "Final",
+          "order": [
+            "version",
+            "user"
+          ]
+        }
+      ]
+    },
+    "blueprintIdentifier": "survey_template"
+  },
+  "invocationMethod": {
+    "type": "WEBHOOK",
+    "url": "https://ingest.getport.io/YourWebhookUrl",
+    "agent": false,
+    "synchronized": true,
+    "method": "POST",
+    "headers": {
+      "RUN_ID": "{{ .run.id }}"
+    },
+    "body": {
+      "responses": "{{ .inputs | del(.[\"user\"]) | to_entries | map( if ((.value | type) == \"array\") then (. as {key: $k, value: $vals} | $vals | map({\"key\": $k, \"value\": .})) else {\"key\": .key, \"value\": .value} end ) | flatten }}",
+      "port_context": {
+        "runId": "{{ .run.id }}",
+        "actionId": "{{ .action.identifier }}",
+        "user": "{{ .trigger.by.user.email }}",
+        "teams": "{{ .inputs.user.team }}",
+        "version": "{{ .inputs.version }}"
+      }
+    }
+  },
+  "requiredApproval": false
+}

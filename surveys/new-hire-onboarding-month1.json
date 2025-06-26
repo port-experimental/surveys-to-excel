@@ -1,0 +1,107 @@
+{
+  "identifier": "new_hire_month1_survey",
+  "title": "New Hire Onboarding: Month 1 Survey",
+  "icon": "User",
+  "trigger": {
+    "type": "self-service",
+    "operation": "CREATE",
+    "userInputs": {
+      "properties": {
+        "task_confidence": {
+          "icon": "DefaultProperty",
+          "type": "number",
+          "title": "How confident are you in performing your tasks after the first month?",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "ongoing_support_effectiveness": {
+          "icon": "DefaultProperty",
+          "type": "number",
+          "title": "How effective was the ongoing support from your team?",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "onboarding_improvement": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "What’s one area of the onboarding process you’d improve?"
+        },
+        "additional_comments": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Any additional comments or further information you'd like to share?"
+        },
+        "version": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Version",
+          "default": "Q1 2025",
+          "visible": false
+        },
+        "user": {
+          "type": "string",
+          "title": "User",
+          "blueprint": "_user",
+          "format": "entity",
+          "default": {
+            "jqQuery": ".user.email"
+          },
+          "visible": false
+        }
+      },
+      "required": [
+        "version"
+      ],
+      "steps": [
+        {
+          "title": "Skill Assessment",
+          "order": [
+            "task_confidence",
+            "ongoing_support_effectiveness",
+            "onboarding_improvement",
+            "additional_comments"
+          ]
+        },
+        {
+          "title": "Final",
+          "order": [
+            "version",
+            "user"
+          ]
+        }
+      ]
+    },
+    "blueprintIdentifier": "survey_template"
+  },
+  "invocationMethod": {
+    "type": "WEBHOOK",
+    "url": "https://ingest.getport.io/YourWebhookUrl",
+    "agent": false,
+    "synchronized": true,
+    "method": "POST",
+    "headers": {
+      "RUN_ID": "{{ .run.id }}"
+    },
+    "body": {
+      "responses": "{{ .inputs | del(.[\"user\"]) | to_entries | map( if ((.value | type) == \"array\") then (. as {key: $k, value: $vals} | $vals | map({\"key\": $k, \"value\": .})) else {\"key\": .key, \"value\": .value} end ) | flatten }}",
+      "port_context": {
+        "runId": "{{ .run.id }}",
+        "actionId": "{{ .action.identifier }}",
+        "user": "{{ .trigger.by.user.email }}",
+        "teams": "{{ .inputs.user.team }}",
+        "version": "{{ .inputs.version }}"
+      }
+    }
+  },
+  "requiredApproval": false
+}

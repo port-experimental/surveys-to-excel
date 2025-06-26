@@ -1,0 +1,485 @@
+{
+  "identifier": "developer_satisfaction_survey",
+  "title": "Developer Satisfaction Survey",
+  "icon": "Health",
+  "trigger": {
+    "type": "self-service",
+    "operation": "CREATE",
+    "userInputs": {
+      "properties": {
+        "overall_role_satisfaction": {
+          "icon": "DefaultProperty",
+          "title": "How satisfied are you with your current role? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        },
+        "work_life_balance": {
+          "icon": "DefaultProperty",
+          "title": "How would you rate your work-life balance? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        },
+        "daily_motivation": {
+          "icon": "DefaultProperty",
+          "title": "How motivated do you feel about your work on a typical day? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        },
+        "stress_level": {
+          "icon": "DefaultProperty",
+          "title": "How would you rate your overall stress level at work? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        },
+        "stress_factors": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "What factors contribute most to your stress?",
+          "description": "Please elaborate if your stress level is below 5.",
+          "visible": {
+            "jqQuery": ".form.stress_level < 5 and .form.stress_level != null"
+          }
+        },
+        "key_influencers": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "What are the main factors that currently affect your job satisfaction? Please list up to three.",
+          "enum": [
+            "Work-life balance",
+            "Compensation & benefits",
+            "Career growth opportunities",
+            "Management & leadership support",
+            "Team collaboration and communication",
+            "Work environment and culture",
+            "Recognition and rewards",
+            "Technical challenges"
+          ],
+          "enumColors": {}
+        },
+        "additional_comments_section1": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Any further information regarding your overall satisfaction & well-being?"
+        },
+        "process_efficiency": {
+          "icon": "DefaultProperty",
+          "type": "number",
+          "title": "How effective are our current development processes (e.g., code reviews, agile ceremonies) in supporting your work?",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "tool_quality": {
+          "icon": "DefaultProperty",
+          "title": "How satisfied are you with the quality and usability of the tools provided? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        },
+        "recurring_issues": {
+          "icon": "DefaultProperty",
+          "type": "array",
+          "title": "Do you experience recurring issues with any tools or processes? (Select all that apply)",
+          "items": {
+            "type": "string",
+            "enum": [
+              "Code Reviews",
+              "Agile Ceremonies",
+              "Tool Quality",
+              "Documentation",
+              "Other"
+            ]
+          }
+        },
+        "recurring_issues_other_specify": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "If Other, please specify:",
+          "visible": {
+            "jqQuery": ".form.recurring_issues | index(\"Other\") != null"
+          }
+        },
+        "improvement_suggestions_process": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "What is one improvement you would suggest to enhance our tools or processes?"
+        },
+        "additional_comments_section2": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Any further comments on process & tooling effectiveness?"
+        },
+        "team_communication": {
+          "icon": "DefaultProperty",
+          "title": "How effective is the communication within your team? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        },
+        "collaboration": {
+          "icon": "DefaultProperty",
+          "title": "How would you rate the level of collaboration on projects within your team? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        },
+        "peer_feedback": {
+          "icon": "DefaultProperty",
+          "title": "How satisfied are you with the feedback and recognition you receive from your peers? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        },
+        "collaboration_enhancements": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "What change could most improve collaboration within your team?"
+        },
+        "additional_comments_section3": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Any further thoughts on team collaboration & communication?"
+        },
+        "support_for_development": {
+          "icon": "DefaultProperty",
+          "title": "How supported do you feel in your professional development? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        },
+        "learning_opportunities": {
+          "icon": "DefaultProperty",
+          "title": "How satisfied are you with the opportunities for learning and advancement provided by the organization? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        },
+        "resource_needs": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "What additional training or resources would help you grow professionally?"
+        },
+        "career_path_clarity": {
+          "icon": "DefaultProperty",
+          "title": "How clear is your career progression path within the organization? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        },
+        "additional_comments_section4": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Any further comments on career growth & professional development?"
+        },
+        "manager_communication": {
+          "icon": "DefaultProperty",
+          "title": "How effectively does your manager communicate expectations and provide feedback? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        },
+        "cultural_alignment": {
+          "icon": "DefaultProperty",
+          "title": "How aligned do you feel with the company’s vision and values? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        },
+        "organizational_improvements": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "What is one suggestion you have for improving our overall organizational culture?"
+        },
+        "additional_comments_section5": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Any further feedback on management & organizational culture?"
+        },
+        "top_change_request": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "What is one change that would most improve your overall satisfaction at work?"
+        },
+        "additional_comments_section6": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Any additional comments or suggestions?"
+        },
+        "version": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Version",
+          "default": "Q1 2025",
+          "visible": false
+        },
+        "user": {
+          "type": "string",
+          "title": "User",
+          "blueprint": "_user",
+          "format": "entity",
+          "default": {
+            "jqQuery": ".user.email"
+          },
+          "visible": false
+        }
+      },
+      "required": [
+        "version"
+      ],
+      "steps": [
+        {
+          "title": "Overall Satisfaction",
+          "order": [
+            "overall_role_satisfaction",
+            "work_life_balance",
+            "daily_motivation",
+            "stress_level",
+            "stress_factors",
+            "key_influencers",
+            "additional_comments_section1"
+          ]
+        },
+        {
+          "title": "Process Effectiveness",
+          "order": [
+            "process_efficiency",
+            "tool_quality",
+            "recurring_issues",
+            "recurring_issues_other_specify",
+            "improvement_suggestions_process",
+            "additional_comments_section2"
+          ]
+        },
+        {
+          "title": "Team Collaboration",
+          "order": [
+            "team_communication",
+            "collaboration",
+            "peer_feedback",
+            "collaboration_enhancements",
+            "additional_comments_section3"
+          ]
+        },
+        {
+          "title": "Professional Development",
+          "order": [
+            "support_for_development",
+            "learning_opportunities",
+            "resource_needs",
+            "career_path_clarity",
+            "additional_comments_section4"
+          ]
+        },
+        {
+          "title": "Organizational Culture",
+          "order": [
+            "manager_communication",
+            "cultural_alignment",
+            "organizational_improvements",
+            "additional_comments_section5"
+          ]
+        },
+        {
+          "title": "Open Feedback",
+          "order": [
+            "top_change_request",
+            "additional_comments_section6"
+          ]
+        },
+        {
+          "title": "Final",
+          "order": [
+            "version",
+            "user"
+          ]
+        }
+      ]
+    },
+    "blueprintIdentifier": "survey_template"
+  },
+  "invocationMethod": {
+    "type": "WEBHOOK",
+    "url": "https://ingest.getport.io/YourWebhookUrl",
+    "agent": false,
+    "synchronized": true,
+    "method": "POST",
+    "headers": {
+      "RUN_ID": "{{ .run.id }}"
+    },
+    "body": {
+      "responses": "{{ .inputs | del(.[\"user\"]) | to_entries | map( if ((.value | type) == \"array\") then (. as {key: $k, value: $vals} | $vals | map({\"key\": $k, \"value\": .})) else {\"key\": .key, \"value\": .value} end ) | flatten }}",
+      "port_context": {
+        "runId": "{{ .run.id }}",
+        "actionId": "{{ .action.identifier }}",
+        "user": "{{ .trigger.by.user.email }}",
+        "teams": "{{ .inputs.user.team }}",
+        "version": "{{ .inputs.version }}"
+      }
+    }
+  },
+  "requiredApproval": false
+}

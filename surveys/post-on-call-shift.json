@@ -1,0 +1,220 @@
+{
+  "identifier": "post_oncall_shift_pulse",
+  "title": "Post On-Call Shift Pulse Survey",
+  "icon": "Clock",
+  "trigger": {
+    "type": "self-service",
+    "operation": "CREATE",
+    "userInputs": {
+      "properties": {
+        "escalation_procedures_clarity": {
+          "icon": "DefaultProperty",
+          "type": "number",
+          "title": "How clear were the escalation procedures during your shift?",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "process_delays": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Did you experience any process delays or bottlenecks?",
+          "enum": [
+            "Yes",
+            "No"
+          ]
+        },
+        "process_delays_comment": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Optional: Please comment on the process delays or bottlenecks",
+          "visible": {
+            "jqQuery": ".form.process_delays == \"Yes\""
+          }
+        },
+        "overwhelmed_feeling": {
+          "icon": "DefaultProperty",
+          "type": "number",
+          "title": "How overwhelmed did you feel during the peak of your shift?",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "overall_stress_rating": {
+          "icon": "DefaultProperty",
+          "type": "number",
+          "title": "Rate your overall stress level during the shift.",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "stress_contributor": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "What factor contributed most to your stress?",
+          "visible": {
+            "jqQuery": ".form.overall_stress_rating >= 4"
+          }
+        },
+        "retrospective_experience": {
+          "icon": "DefaultProperty",
+          "type": "number",
+          "title": "In retrospect, how did your actual experience compare to what you expected before the shift?",
+          "description": "1 = Much Worse Than Expected, 5 = Much Better Than Expected",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "expectation_discrepancy": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "What was the biggest discrepancy between your expectations and what actually happened?"
+        },
+        "oncall_process_improvement": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "What one change would most improve the on-call process?"
+        },
+        "support_effectiveness": {
+          "icon": "DefaultProperty",
+          "type": "number",
+          "title": "How effective was the support provided during your shift?",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "version": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Version",
+          "default": "Q1 2025",
+          "visible": false
+        },
+        "user": {
+          "type": "string",
+          "title": "User",
+          "blueprint": "_user",
+          "format": "entity",
+          "default": {
+            "jqQuery": ".user.email"
+          },
+          "visible": false
+        }
+      },
+      "required": [
+        "version"
+      ],
+      "steps": [
+        {
+          "title": "During-Shift Experience",
+          "order": [
+            "escalation_procedures_clarity",
+            "process_delays",
+            "process_delays_comment",
+            "overwhelmed_feeling",
+            "overall_stress_rating",
+            "stress_contributor"
+          ]
+        },
+        {
+          "title": "Retrospective Reflection",
+          "order": [
+            "retrospective_experience",
+            "expectation_discrepancy"
+          ]
+        },
+        {
+          "title": "Post-Shift Improvement",
+          "order": [
+            "oncall_process_improvement",
+            "support_effectiveness"
+          ]
+        },
+        {
+          "title": "Final",
+          "order": [
+            "version",
+            "user"
+          ]
+        }
+      ]
+    },
+    "blueprintIdentifier": "survey_template"
+  },
+  "invocationMethod": {
+    "type": "WEBHOOK",
+    "url": "https://ingest.getport.io/YourWebhookUrl",
+    "agent": false,
+    "synchronized": true,
+    "method": "POST",
+    "headers": {
+      "RUN_ID": "{{ .run.id }}"
+    },
+    "body": {
+      "responses": "{{ .inputs | del(.[\"user\"]) | to_entries | map( if (.value | type) == \"array\" then (. as {key: $k, value: $vals} | $vals | map({\"key\": $k, \"value\": .})) else {\"key\": .key, \"value\": .value} end ) | flatten }}",
+      "port_context": {
+        "runId": "{{ .run.id }}",
+        "actionId": "{{ .action.identifier }}",
+        "user": "{{ .trigger.by.user.email }}",
+        "teams": "{{ .inputs.user.team }}",
+        "version": "{{ .inputs.version }}"
+      }
+    }
+  },
+  "requiredApproval": false
+}

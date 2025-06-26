@@ -1,0 +1,211 @@
+{
+  "identifier": "post_incident_outage_survey",
+  "title": "Post-Incident/Outage Survey",
+  "icon": "Alert",
+  "trigger": {
+    "type": "self-service",
+    "operation": "CREATE",
+    "userInputs": {
+      "properties": {
+        "instructions_clarity": {
+          "icon": "DefaultProperty",
+          "type": "number",
+          "title": "How clear were the instructions during the incident?",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "communication_effectiveness": {
+          "icon": "DefaultProperty",
+          "type": "number",
+          "title": "How effective was the communication during the outage?",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "support_channels_adequate": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Were the support channels adequate during the incident?",
+          "enum": [
+            "Yes",
+            "No"
+          ]
+        },
+        "support_channels_comment": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Optional: Please elaborate on the support channels",
+          "visible": {
+            "jqQuery": ".form.support_channels_adequate == \"No\""
+          }
+        },
+        "incident_stress": {
+          "icon": "DefaultProperty",
+          "type": "number",
+          "title": "How stressful was the incident overall?",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "incident_response_comparison": {
+          "icon": "DefaultProperty",
+          "type": "number",
+          "title": "In retrospect, how did the actual incident response compare to what you expected before the incident began?",
+          "description": "1 = Much Worse, 5 = Much Better",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "biggest_gap_expectations": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "What was the biggest gap between your expectations and reality?"
+        },
+        "incident_response_improvement": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "What one change would you recommend to improve our incident response?"
+        },
+        "recovery_speed": {
+          "icon": "DefaultProperty",
+          "type": "number",
+          "title": "How quickly did you feel you recovered post-incident?",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "version": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Version",
+          "default": "Q1 2025",
+          "visible": false
+        },
+        "user": {
+          "type": "string",
+          "title": "User",
+          "blueprint": "_user",
+          "format": "entity",
+          "default": {
+            "jqQuery": ".user.email"
+          },
+          "visible": false
+        }
+      },
+      "required": [
+        "version"
+      ],
+      "steps": [
+        {
+          "title": "Incident Response Ex",
+          "order": [
+            "instructions_clarity",
+            "communication_effectiveness",
+            "support_channels_adequate",
+            "support_channels_comment"
+          ]
+        },
+        {
+          "title": "Emotional Impact",
+          "order": [
+            "incident_stress",
+            "incident_response_comparison",
+            "biggest_gap_expectations"
+          ]
+        },
+        {
+          "title": "Improvement Suggestions",
+          "order": [
+            "incident_response_improvement",
+            "recovery_speed"
+          ]
+        },
+        {
+          "title": "Final",
+          "order": [
+            "version",
+            "user"
+          ]
+        }
+      ]
+    },
+    "blueprintIdentifier": "survey_template"
+  },
+  "invocationMethod": {
+    "type": "WEBHOOK",
+    "url": "https://ingest.getport.io/YourWebhookUrl",
+    "agent": false,
+    "synchronized": true,
+    "method": "POST",
+    "headers": {
+      "RUN_ID": "{{ .run.id }}"
+    },
+    "body": {
+      "responses": "{{ .inputs | del(.[\"user\"]) | to_entries | map( if (.value | type) == \"array\" then (. as {key: $k, value: $vals} | $vals | map({\"key\": $k, \"value\": .})) else {\"key\": .key, \"value\": .value} end ) | flatten }}",
+      "port_context": {
+        "runId": "{{ .run.id }}",
+        "actionId": "{{ .action.identifier }}",
+        "user": "{{ .trigger.by.user.email }}",
+        "teams": "{{ .inputs.user.team }}",
+        "version": "{{ .inputs.version }}"
+      }
+    }
+  },
+  "requiredApproval": false
+}

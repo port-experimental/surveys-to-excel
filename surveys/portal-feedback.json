@@ -1,0 +1,540 @@
+{
+  "identifier": "internal_developer_portal_feedback_survey",
+  "title": "Internal Developer Portal Feedback Survey",
+  "icon": "Port",
+  "trigger": {
+    "type": "self-service",
+    "operation": "CREATE",
+    "userInputs": {
+      "properties": {
+        "frequency_of_use": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "How often do you use the internal developer portal?",
+          "enum": [
+            "Daily",
+            "Several times a week",
+            "Once a week",
+            "Rarely",
+            "Never"
+          ]
+        },
+        "primary_tasks": {
+          "icon": "DefaultProperty",
+          "type": "array",
+          "title": "Which of the following tasks do you primarily use the portal for?",
+          "description": "Select all that apply",
+          "items": {
+            "type": "string",
+            "enum": [
+              "Accessing documentation",
+              "Requesting services",
+              "Monitoring deployments",
+              "Finding APIs",
+              "Onboarding new services",
+              "Reporting issues",
+              "Other"
+            ]
+          }
+        },
+        "primary_tasks_other_specify": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "If Other, please specify",
+          "visible": {
+            "jqQuery": ".form.primary_tasks | index(\"Other\") != null"
+          }
+        },
+        "role_context": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "What is your primary role?",
+          "enum": [
+            "Front-end developer",
+            "Back-end developer",
+            "DevOps/SRE",
+            "QA",
+            "Manager",
+            "Other"
+          ]
+        },
+        "role_context_other_specify": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "If Other, please specify",
+          "visible": {
+            "jqQuery": ".form.role_context == \"Other\""
+          }
+        },
+        "ease_of_navigation": {
+          "icon": "DefaultProperty",
+          "title": "How easy is it to navigate the portal? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        },
+        "user_interface_design": {
+          "icon": "DefaultProperty",
+          "title": "How would you rate the overall design and layout of the portal? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        },
+        "design_improvements": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "What design changes or improvements would you suggest?"
+        },
+        "api_catalog_rating": {
+          "icon": "DefaultProperty",
+          "title": "How satisfied are you with the API catalog? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        },
+        "monitoring_dashboards_rating": {
+          "icon": "DefaultProperty",
+          "title": "How satisfied are you with the monitoring dashboards? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        },
+        "integration_ci_cd_rating": {
+          "icon": "DefaultProperty",
+          "title": "How satisfied are you with the integration with CI/CD? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        },
+        "on_call_management_rating": {
+          "icon": "DefaultProperty",
+          "title": "How satisfied are you with the on-call management features? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        },
+        "documentation_access_rating": {
+          "icon": "DefaultProperty",
+          "title": "How satisfied are you with the documentation access? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        },
+        "feature_gaps": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Are there any features or functionalities that you feel are missing?"
+        },
+        "customizability_rating": {
+          "icon": "DefaultProperty",
+          "title": "How well does the portal adapt to your specific workflow or needs? (1 = Lowest, 5 = Highest))",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        },
+        "customization_options": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "What additional customization options would be valuable?"
+        },
+        "workflow_integration": {
+          "icon": "DefaultProperty",
+          "title": "How seamlessly does the portal integrate with your daily development tools and processes? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        },
+        "productivity_impact": {
+          "icon": "DefaultProperty",
+          "title": "To what extent has the portal improved your overall productivity? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        },
+        "workflow_example": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Can you share an example where the portal significantly helped (or hindered) your workflow?"
+        },
+        "training_improvements": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "What additional resources or improvements would help new users get up to speed faster?"
+        },
+        "documentation_quality": {
+          "icon": "DefaultProperty",
+          "title": "How would you rate the quality and clarity of the portal’s documentation? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        },
+        "documentation_improvements": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "What changes would improve the documentation?"
+        },
+        "support_experience": {
+          "icon": "DefaultProperty",
+          "title": "When issues arise, how satisfied are you with the support provided (e.g., internal helpdesk, self-service troubleshooting)? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        },
+        "overall_satisfaction": {
+          "icon": "DefaultProperty",
+          "title": "Overall, how satisfied are you with the internal developer portal? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        },
+        "comparative_reflection": {
+          "icon": "DefaultProperty",
+          "title": "Compared to your initial expectations, how has the portal met your needs? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        },
+        "top_improvement_request": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "What is the one change you believe would most improve the portal?"
+        },
+        "additional_feedback": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Do you have any other comments or suggestions regarding the internal developer portal?"
+        },
+        "devops_specific_feedback": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "As a DevOps/SRE, what additional features or integrations would you like to see in the portal?",
+          "visible": {
+            "jqQuery": ".form.role_context == \"DevOps/SRE\""
+          }
+        },
+        "version": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Version",
+          "default": "Q1 2025",
+          "visible": false
+        },
+        "user": {
+          "type": "string",
+          "title": "User",
+          "blueprint": "_user",
+          "format": "entity",
+          "default": {
+            "jqQuery": ".user.email"
+          },
+          "visible": false
+        },
+        "self_service_rating": {
+          "icon": "DefaultProperty",
+          "title": "How satisfied are you with the Self-service capabilities of the portal? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        },
+        "onboarding_effectiveness": {
+          "icon": "DefaultProperty",
+          "title": "How effective was the training/onboarding process for the portal when you first started using it? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "lightGray",
+            "2": "lightGray",
+            "3": "lightGray",
+            "4": "lightGray",
+            "5": "lightGray"
+          }
+        }
+      },
+      "required": [
+        "version"
+      ],
+      "steps": [
+        {
+          "title": "Usage & Overview",
+          "order": [
+            "frequency_of_use",
+            "primary_tasks",
+            "primary_tasks_other_specify",
+            "role_context",
+            "role_context_other_specify"
+          ]
+        },
+        {
+          "title": "Usability & Navigation",
+          "order": [
+            "ease_of_navigation",
+            "user_interface_design",
+            "design_improvements"
+          ]
+        },
+        {
+          "title": "Features & Functionality",
+          "order": [
+            "self_service_rating",
+            "api_catalog_rating",
+            "monitoring_dashboards_rating",
+            "integration_ci_cd_rating",
+            "on_call_management_rating",
+            "documentation_access_rating",
+            "feature_gaps",
+            "customizability_rating",
+            "customization_options"
+          ]
+        },
+        {
+          "title": "Integration & Workflow",
+          "order": [
+            "workflow_integration",
+            "productivity_impact",
+            "workflow_example",
+            "onboarding_effectiveness",
+            "training_improvements"
+          ]
+        },
+        {
+          "title": "Documentation & Support",
+          "order": [
+            "documentation_quality",
+            "documentation_improvements",
+            "support_experience"
+          ]
+        },
+        {
+          "title": "Overall Satisfaction",
+          "order": [
+            "overall_satisfaction",
+            "comparative_reflection",
+            "top_improvement_request",
+            "additional_feedback"
+          ]
+        },
+        {
+          "title": "Role-Specific Feedback",
+          "order": [
+            "devops_specific_feedback"
+          ]
+        },
+        {
+          "title": "Final",
+          "order": [
+            "version",
+            "user"
+          ]
+        }
+      ]
+    },
+    "blueprintIdentifier": "survey_template"
+  },
+  "invocationMethod": {
+    "type": "WEBHOOK",
+    "url": "https://ingest.getport.io/YourWebhookUrl",
+    "agent": false,
+    "synchronized": true,
+    "method": "POST",
+    "headers": {
+      "RUN_ID": "{{ .run.id }}"
+    },
+    "body": {
+      "responses": "{{ .inputs | del(.[\"user\"]) | to_entries | map( if ((.value | type) == \"array\") then (. as {key: $k, value: $vals} | $vals | map({\"key\": $k, \"value\": .})) else {\"key\": .key, \"value\": .value} end ) | flatten }}",
+      "port_context": {
+        "runId": "{{ .run.id }}",
+        "actionId": "{{ .action.identifier }}",
+        "user": "{{ .trigger.by.user.email }}",
+        "teams": "{{ .inputs.user.team }}",
+        "version": "{{ .inputs.version }}"
+      }
+    }
+  },
+  "requiredApproval": false
+}

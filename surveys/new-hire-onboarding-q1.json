@@ -1,0 +1,120 @@
+{
+  "identifier": "new_hire_quarter1_survey",
+  "title": "New Hire Onboarding: Quarter 1 Survey",
+  "icon": "User",
+  "trigger": {
+    "type": "self-service",
+    "operation": "CREATE",
+    "userInputs": {
+      "properties": {
+        "cultural_integration": {
+          "icon": "DefaultProperty",
+          "type": "number",
+          "title": "How well do you feel integrated into the company culture now?",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "role_alignment": {
+          "icon": "DefaultProperty",
+          "type": "number",
+          "title": "How aligned is your current role with your initial expectations?",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "onboarding_retrospective": {
+          "icon": "DefaultProperty",
+          "type": "number",
+          "title": "Reflecting on your entire onboarding journey, how did your experience compare with your initial expectations?",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "additional_support": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "What additional support would have helped your transition?"
+        },
+        "additional_comments": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Any additional comments or further information you'd like to share?"
+        },
+        "version": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Version",
+          "default": "Q1 2025",
+          "visible": false
+        },
+        "user": {
+          "type": "string",
+          "title": "User",
+          "blueprint": "_user",
+          "format": "entity",
+          "default": {
+            "jqQuery": ".user.email"
+          },
+          "visible": false
+        }
+      },
+      "required": [
+        "version"
+      ],
+      "steps": [
+        {
+          "title": "Long-Term Alignment",
+          "order": [
+            "cultural_integration",
+            "role_alignment",
+            "onboarding_retrospective",
+            "additional_support",
+            "additional_comments"
+          ]
+        },
+        {
+          "title": "Final",
+          "order": [
+            "version",
+            "user"
+          ]
+        }
+      ]
+    },
+    "blueprintIdentifier": "survey_template"
+  },
+  "invocationMethod": {
+    "type": "WEBHOOK",
+    "url": "https://ingest.getport.io/YourWebhookUrl",
+    "agent": false,
+    "synchronized": true,
+    "method": "POST",
+    "headers": {
+      "RUN_ID": "{{ .run.id }}"
+    },
+    "body": {
+      "responses": "{{ .inputs | del(.[\"user\"]) | to_entries | map( if ((.value | type) == \"array\") then (. as {key: $k, value: $vals} | $vals | map({\"key\": $k, \"value\": .})) else {\"key\": .key, \"value\": .value} end ) | flatten }}",
+      "port_context": {
+        "runId": "{{ .run.id }}",
+        "actionId": "{{ .action.identifier }}",
+        "user": "{{ .trigger.by.user.email }}",
+        "teams": "{{ .inputs.user.team }}",
+        "version": "{{ .inputs.version }}"
+      }
+    }
+  },
+  "requiredApproval": false
+}

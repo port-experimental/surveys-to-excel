@@ -1,0 +1,169 @@
+{
+  "identifier": "new_hire_day1_survey",
+  "title": "New Hire Onboarding: Day 1 Survey",
+  "icon": "User",
+  "trigger": {
+    "type": "self-service",
+    "operation": "CREATE",
+    "userInputs": {
+      "properties": {
+        "pre_arrival_communication": {
+          "icon": "DefaultProperty",
+          "title": "How well did the pre-arrival information prepare you for your first day? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "setup_access": {
+          "icon": "DefaultProperty",
+          "title": "How satisfied are you with the readiness of your workstation and access to essential systems? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "role_clarity": {
+          "icon": "DefaultProperty",
+          "title": "How clear were your role and responsibilities on your first day? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "welcoming_experience": {
+          "icon": "DefaultProperty",
+          "title": "How welcomed did you feel by your colleagues on your first day? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "overall_experience": {
+          "icon": "DefaultProperty",
+          "title": "Overall, how satisfied are you with your first day? (1 = Lowest, 5 = Highest)",
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "version": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Version",
+          "default": "Q1 2025",
+          "visible": false
+        },
+        "user": {
+          "type": "string",
+          "title": "User",
+          "blueprint": "_user",
+          "format": "entity",
+          "default": {
+            "jqQuery": ".user.email"
+          },
+          "visible": false
+        }
+      },
+      "required": [
+        "version"
+      ],
+      "steps": [
+        {
+          "title": "First Day Experience",
+          "order": [
+            "pre_arrival_communication",
+            "setup_access",
+            "role_clarity",
+            "welcoming_experience",
+            "overall_experience"
+          ]
+        },
+        {
+          "title": "Final",
+          "order": [
+            "version",
+            "user"
+          ]
+        }
+      ]
+    },
+    "blueprintIdentifier": "survey_template"
+  },
+  "invocationMethod": {
+    "type": "WEBHOOK",
+    "url": "https://ingest.getport.io/YourWebhookUrl",
+    "agent": false,
+    "synchronized": true,
+    "method": "POST",
+    "headers": {
+      "RUN_ID": "{{ .run.id }}"
+    },
+    "body": {
+      "responses": "{{ .inputs | del(.[\"user\"]) | to_entries | map( if ((.value | type) == \"array\") then (. as {key: $k, value: $vals} | $vals | map({\"key\": $k, \"value\": .})) else {\"key\": .key, \"value\": .value} end ) | flatten }}",
+      "port_context": {
+        "runId": "{{ .run.id }}",
+        "actionId": "{{ .action.identifier }}",
+        "user": "{{ .trigger.by.user.email }}",
+        "teams": "{{ .inputs.user.team }}",
+        "version": "{{ .inputs.version }}"
+      }
+    }
+  },
+  "requiredApproval": false
+}

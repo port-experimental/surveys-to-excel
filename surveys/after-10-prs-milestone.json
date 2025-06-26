@@ -1,0 +1,188 @@
+{
+  "identifier": "pr_milestone_survey",
+  "title": "After 10th PR Milestone Survey",
+  "icon": "Github",
+  "trigger": {
+    "type": "self-service",
+    "operation": "CREATE",
+    "userInputs": {
+      "properties": {
+        "feedback_satisfaction": {
+          "icon": "DefaultProperty",
+          "type": "number",
+          "title": "How satisfied are you with the feedback you received during code reviews?",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "review_comments_helpfulness": {
+          "icon": "DefaultProperty",
+          "type": "number",
+          "title": "How helpful were the review comments in improving your code quality?",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "understanding_best_practices": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Did the review process help you understand best practices better?",
+          "enum": [
+            "Yes",
+            "No"
+          ]
+        },
+        "understanding_best_practices_comment": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Optional: Please share any additional comments on the review process and best practices"
+        },
+        "pr_reviews_comparison": {
+          "icon": "DefaultProperty",
+          "type": "number",
+          "title": "Thinking back, how did the experience of your recent PR reviews compare to what you expected when you started contributing?",
+          "description": "1 = Much Worse, 5 = Much Better",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "review_process_surprise": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "What surprised you the most about the review process?"
+        },
+        "review_onboarding_improvement": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "What improvements would you suggest for the PR review or onboarding process?"
+        },
+        "coding_confidence": {
+          "icon": "DefaultProperty",
+          "type": "number",
+          "title": "How confident do you feel about your coding and contribution process now?",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "version": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Version",
+          "default": "Q1 2025",
+          "visible": false
+        },
+        "user": {
+          "type": "string",
+          "title": "User",
+          "blueprint": "_user",
+          "format": "entity",
+          "default": {
+            "jqQuery": ".user.email"
+          },
+          "visible": false
+        }
+      },
+      "required": [
+        "version"
+      ],
+      "steps": [
+        {
+          "title": "Code Review Experience",
+          "order": [
+            "feedback_satisfaction",
+            "review_comments_helpfulness",
+            "understanding_best_practices",
+            "understanding_best_practices_comment"
+          ]
+        },
+        {
+          "title": "Retrospective Comparison",
+          "order": [
+            "pr_reviews_comparison",
+            "review_process_surprise"
+          ]
+        },
+        {
+          "title": "Improvement & Onboarding",
+          "order": [
+            "review_onboarding_improvement",
+            "coding_confidence"
+          ]
+        },
+        {
+          "title": "Final",
+          "order": [
+            "version",
+            "user"
+          ]
+        }
+      ]
+    },
+    "blueprintIdentifier": "survey_template"
+  },
+  "invocationMethod": {
+    "type": "WEBHOOK",
+    "url": "https://ingest.getport.io/YourWebhookUrl",
+    "agent": false,
+    "synchronized": true,
+    "method": "POST",
+    "headers": {
+      "RUN_ID": "{{ .run.id }}"
+    },
+    "body": {
+      "responses": "{{ .inputs | del(.[\"user\"]) | to_entries | map( if (.value | type) == \"array\" then (. as {key: $k, value: $vals} | $vals | map({\"key\": $k, \"value\": .})) else {\"key\": .key, \"value\": .value} end ) | flatten }}",
+      "port_context": {
+        "runId": "{{ .run.id }}",
+        "actionId": "{{ .action.identifier }}",
+        "user": "{{ .trigger.by.user.email }}",
+        "teams": "{{ .inputs.user.team }}",
+        "version": "{{ .inputs.version }}"
+      }
+    }
+  },
+  "requiredApproval": false
+}

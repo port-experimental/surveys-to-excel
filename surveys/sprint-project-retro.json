@@ -1,0 +1,200 @@
+{
+  "identifier": "sprint_project_retro_survey",
+  "title": "Sprint/Project Retro Survey",
+  "icon": "IaC",
+  "trigger": {
+    "type": "self-service",
+    "operation": "CREATE",
+    "userInputs": {
+      "properties": {
+        "team_collaboration": {
+          "icon": "DefaultProperty",
+          "type": "number",
+          "title": "How would you rate the team collaboration during this sprint/project?",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "process_effectiveness": {
+          "icon": "DefaultProperty",
+          "type": "number",
+          "title": "How effective were our processes in enabling smooth execution?",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "bottlenecks_productivity": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Were there any bottlenecks that impacted productivity?",
+          "enum": [
+            "Yes",
+            "No"
+          ]
+        },
+        "bottlenecks_comment": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Optional: Please elaborate on the bottlenecks",
+          "visible": {
+            "jqQuery": ".form.bottlenecks_productivity == \"Yes\""
+          }
+        },
+        "retrospective_outcome_rating": {
+          "icon": "DefaultProperty",
+          "type": "number",
+          "title": "Compared to your initial expectations for this sprint/project, how did the outcome measure up?",
+          "description": "1 = Much Worse, 5 = Much Better",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "process_difference_followup": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "What aspect of the process differed most from what you anticipated?"
+        },
+        "workload_balance": {
+          "icon": "DefaultProperty",
+          "type": "number",
+          "title": "How balanced was your workload during this period?",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "enumColors": {
+            "1": "red",
+            "2": "orange",
+            "3": "yellow",
+            "4": "blue",
+            "5": "green"
+          }
+        },
+        "sprint_process_improvement": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "What one change would most improve our sprint process?"
+        },
+        "imbalance_factor": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "What factor contributed most to the imbalance?",
+          "visible": {
+            "jqQuery": ".form.workload_balance <= 2"
+          }
+        },
+        "version": {
+          "icon": "DefaultProperty",
+          "type": "string",
+          "title": "Version",
+          "default": "Q1 2025",
+          "visible": false
+        },
+        "user": {
+          "type": "string",
+          "title": "User",
+          "blueprint": "_user",
+          "format": "entity",
+          "default": {
+            "jqQuery": ".user.email"
+          },
+          "visible": false
+        }
+      },
+      "required": [
+        "version"
+      ],
+      "steps": [
+        {
+          "title": "Sprint Execution",
+          "order": [
+            "team_collaboration",
+            "process_effectiveness",
+            "bottlenecks_productivity",
+            "bottlenecks_comment"
+          ]
+        },
+        {
+          "title": "Retrospective Reflection",
+          "order": [
+            "retrospective_outcome_rating",
+            "process_difference_followup"
+          ]
+        },
+        {
+          "title": "Improvement & Feedback",
+          "order": [
+            "workload_balance",
+            "sprint_process_improvement",
+            "imbalance_factor"
+          ]
+        },
+        {
+          "title": "Final",
+          "order": [
+            "version",
+            "user"
+          ]
+        }
+      ]
+    },
+    "blueprintIdentifier": "survey_template"
+  },
+  "invocationMethod": {
+    "type": "WEBHOOK",
+    "url": "https://ingest.getport.io/YourWebhookUrl",
+    "agent": false,
+    "synchronized": true,
+    "method": "POST",
+    "headers": {
+      "RUN_ID": "{{ .run.id }}"
+    },
+    "body": {
+      "responses": "{{ .inputs | del(.[\"user\"]) | to_entries | map( if (.value | type) == \"array\" then (. as {key: $k, value: $vals} | $vals | map({\"key\": $k, \"value\": .})) else {\"key\": .key, \"value\": .value} end ) | flatten }}",
+      "port_context": {
+        "runId": "{{ .run.id }}",
+        "actionId": "{{ .action.identifier }}",
+        "user": "{{ .trigger.by.user.email }}",
+        "teams": "{{ .inputs.user.team }}",
+        "version": "{{ .inputs.version }}"
+      }
+    }
+  },
+  "requiredApproval": false
+}
